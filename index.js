@@ -15,7 +15,6 @@ function fetchAllCharacters(page) {
       if(data.next) {
         fetchAllCharacters(page + 1)
       } else {
-        console.log('done loading')
         renderAllCharacters()
       }
     })
@@ -28,8 +27,21 @@ function renderAllCharacters() {
 function renderCharacter(character) {
   const div = document.createElement('div')
   const h3 = document.createElement('h3')
+
+  div.dataset.name = character.name
   h3.textContent = character.name
+
+  div.addEventListener('pointerenter', createBorder)
+  div.addEventListener('pointerleave', removeBorder)
 
   div.appendChild(h3)
   characterListDiv.appendChild(div)
+}
+
+function createBorder(e) {
+  this.style.border = '1px solid black'
+}
+
+function removeBorder(e) {
+  this.style.border = 'none'
 }
