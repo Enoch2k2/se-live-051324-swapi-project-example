@@ -33,6 +33,7 @@ function renderCharacter(character) {
 
   div.addEventListener('pointerenter', createBorder)
   div.addEventListener('pointerleave', removeBorder)
+  div.addEventListener('click', showMoreInfo)
 
   div.appendChild(h3)
   characterListDiv.appendChild(div)
@@ -44,4 +45,38 @@ function createBorder(e) {
 
 function removeBorder(e) {
   this.style.border = 'none'
+}
+
+function showMoreInfo(e) {
+  const characterName = this.dataset.name;
+  const character = characters.find(char => char.name === characterName);
+
+  console.log(character)
+
+  const birthYear = document.createElement('p')
+  const eyeColor = document.createElement('p')
+  const gender = document.createElement('p')
+
+  birthYear.textContent = `Birth Year: ${character.birth_year}`
+  eyeColor.textContent = `Eye Color: ${character.eye_color}`
+  gender.textContent = `Gender: ${character.gender}`
+
+  fetch(character.homeworld)
+    .then(resp => resp.json())
+    .then(planet => {
+      console.log(planet)
+      if(this.id !== "active") {
+        console.log(this)
+        const planetName = document.createElement('p')
+        planetName.textContent = `Homeworld: ${planet.name}`
+        this.appendChild(planetName)
+        this.appendChild(gender)
+        this.appendChild(birthYear)
+        this.appendChild(eyeColor)
+        this.id = "active"
+      }
+    })
+
+
+
 }
